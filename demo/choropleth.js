@@ -29,7 +29,7 @@ var color = d3.scaleQuantize().range([
       'rgb(103,0,13)'
     ]);
 
-//read user data
+//read user data, define the domain for your color scale
 d3.json("attacks.json").then(function(attacks_data){
   color.domain([
     d3.min(attacks_data, function(d){
@@ -40,17 +40,20 @@ d3.json("attacks.json").then(function(attacks_data){
     })
   ]);
 
+//loop map data and user data to merge them based on state name
 d3.json("us.json").then(function(us_data){
   us_data.features.forEach(function(us_e, us_i){
     attacks_data.forEach(function(att_e, att_i){
       if(us_e.properties.name !== att_e.state){
         return null;
       }
+      // adding the 'num' value to map data for easy access
       us_data.features[us_i].properties.num = parseFloat(att_e.num)
-      // });
     });
   });
 
+//draw the map, fill the color for each state based on 'num' and color scale
+//add a 'tile' element for a quick tooltip in the end
 svg.selectAll('path')
     .data(us_data.features)
     .enter()
@@ -67,5 +70,4 @@ svg.selectAll('path')
       return d.properties.name+'\n'+d.properties.num
     });
 });
-
 });

@@ -17,7 +17,7 @@ var svg             =   d3.select("#chart")
     .attr("width", chart_width)
     .attr("height", chart_height);
 
-//read data and draw map
+//read data and draw map, call draw_cities to add bubbles
 d3.json("us.json").then(function(data){
     svg.selectAll('path')
     .data(data.features)
@@ -31,6 +31,10 @@ d3.json("us.json").then(function(data){
     draw_cities()
 });
 
+// draw the bubbles
+// each bubble is a circle with attrs 'cx, cy, r
+// cx, cy can be calcuated with lon/lat data with projection
+// r is defined with 'population' value - need proper tranformation depending on what value is involved.
 function draw_cities(){
   d3.json('us-cities.json').then(function(city_data){
     svg.selectAll('circle')
