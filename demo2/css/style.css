@@ -4,11 +4,11 @@ svg {
     display: block;
 }
 
-.counties {
+/* .counties {
 	fill: none;
-}
+} */
 
-.states {
+.districts {
 	fill: none;
 	stroke: #fff;
 	stroke-linejoin: round;
