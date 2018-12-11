@@ -49,8 +49,9 @@
     //define color scal
     var color = d3.scaleThreshold()
         .domain(d3.range(1, 10))
-        .range(d3.schemeGreens[9]);
+       .range(d3.schemeGreens[9]);
 
+        // .range(d3.schemeAccent);
     //define grouping
     var g = svg.append("g")
         .attr("class", "key")
