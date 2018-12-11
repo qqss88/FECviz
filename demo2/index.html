@@ -43,12 +43,12 @@
 
     // x linear scale
     var x = d3.scaleLinear()
-        .domain([1, 9])
+        .domain([1, 12])
         .rangeRound([600, 860]);
 
-    //define color scale
+    //define color scal
     var color = d3.scaleThreshold()
-        .domain(d3.range(1, 12))
+        .domain(d3.range(1, 10))
         .range(d3.schemeGreens[9]);
 
     //define grouping
