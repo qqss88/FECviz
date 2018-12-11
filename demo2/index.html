@@ -33,17 +33,23 @@
    // this is the map for user data
     var unemployment = d3.map();
    //define geoPath, may need to add projection if no projection pre-loaded
-    var path = d3.geoPath();
+
+   //define a projection, for us map, we most likely use geoAlberUsa
+    var projection = d3.geoAlbersUsa()
+    .scale([width])
+    .translate([width/2, height/2]);
+
+    var path = d3.geoPath(projection);
 
     // x linear scale
     var x = d3.scaleLinear()
-        .domain([1, 10])
+        .domain([1, 9])
         .rangeRound([600, 860]);
 
     //define color scale
     var color = d3.scaleThreshold()
-        .domain(d3.range(2, 10))
-        .range(d3.schemeBlues[9]);
+        .domain(d3.range(1, 12))
+        .range(d3.schemeGreens[9]);
 
     //define grouping
     var g = svg.append("g")
@@ -72,7 +78,7 @@
         .attr("fill", "#000")
         .attr("text-anchor", "start")
         .attr("font-weight", "bold")
-        .text("Unemployment rate");
+        .text("Dsitrict Voting Rate");
  
     //define axis for legend
     g.call(d3.axisBottom(x)
@@ -91,9 +97,13 @@
 */    
  
     //read data: map json data and user tsv data -- user data used to populate unemployment map
+    // var promises = [
+    //   d3.json("https://d3js.org/us-10m.v1.json"),
+    //   d3.tsv("data/map.tsv",  function(d) { unemployment.set(d.id, +d.rate); })
+    // ]
     var promises = [
-      d3.json("https://d3js.org/us-10m.v1.json"),
-      d3.tsv("data/map.tsv",  function(d) { unemployment.set(d.id, +d.rate); })
+      d3.json("data/districts.json"),
+      d3.tsv("data/district.tsv",  function(d) { unemployment.set(d.id, +d.rate); })
     ]
     
     //plug in data and draw map
@@ -106,9 +116,9 @@
     //this is the function for making the map visualization
     function ready(us) {
         svg.append("g")
-            .attr("class", "counties")
+            .attr("class", "dsitricts")
             .selectAll("path")
-                .data(topojson.feature(us, us.objects.counties).features)
+                .data(topojson.feature(us, us.objects.districts).features)
             .enter().append("path")
                 .attr("fill", function(d) { return color(d.rate = unemployment.get(d.id)); })
                 .attr("d", path)
@@ -117,10 +127,10 @@
 
         //adding state border, using topojson datum and mesh
         //ref link: https://github.com/topojson/topojson-client/blob/master/README.md#mesh
-        svg.append("path")
-            .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-            .attr("class", "states")
-            .attr("d", path);
+        // svg.append("path")
+        //     .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+        //     .attr("class", "states")
+        //     .attr("d", path);
     }
 
 </script>
